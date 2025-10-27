@@ -3,19 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms and Conditions</title>
+  <title>Terms & Conditions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <main class="content" style="margin-top:40px">
-    <h1>Terms and Conditions</h1>
-    <p>By using this website, you agree to the following terms:</p>
-    <ul>
-      <li>Do not redistribute content without permission.</li>
-      <li>Use this site responsibly and respectfully.</li>
-      <li>We may update these terms at any time.</li>
-    </ul>
-    <p><small>Last updated: October 26, 2025</small></p>
+<body class="bg-pink">
+  <header class="site-header">
+    <div class="container row">
+      <div class="brand">Motherhood</div>
+      <nav class="nav">
+        <details class="dropdown">
+          <summary aria-haspopup="listbox" aria-expanded="false">Menu</summary>
+          <ul class="menu" role="listbox">
+            <li><a href="index.html" role="option">Home</a></li>
+            <li><a href="terms.html" role="option" aria-selected="true">Terms &amp; Conditions</a></li>
+          </ul>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Centered white page (not center-aligned text) with pink image background visible on left/right -->
+  <main class="terms-wrap">
+    <article class="terms-page">
+      <h1>Terms and Conditions</h1>
+      <p><em>Replace this with your exact formatted document. The text is left-aligned but the page itself is centered.</em></p>
+      <h2>1. Using the Site</h2>
+      <p>By accessing this website, you agree to comply with these Terms and all applicable laws and regulations.</p>
+      <h2>2. Acceptable Use</h2>
+      <p>You agree not to misuse the site or interfere with other users' enjoyment.</p>
+      <h2>3. Updates</h2>
+      <p>We may modify these Terms at any time. Continued use of the site constitutes acceptance of the updated Terms.</p>
+      <p><small>Last updated: <span id="year"></span></small></p>
+    </article>
   </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>&copy; <span id="year2"></span> Motherhood</small>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const y = new Date().getFullYear();
+      document.getElementById('year').textContent = y;
+      document.getElementById('year2').textContent = y;
+    });
+  </script>
 </body>
 </html>

@@ -1,86 +1,94 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="sunset"> <!-- Change theme here: sunset | forest | ocean | midnight -->
+<html lang="en" data-theme="sunset">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Website</title>
+  <title>Welcome to Motherhood</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="no-scroll">
-  <!-- Terms Modal -->
-  <div id="termsPopup" class="popup" role="dialog" aria-modal="true" aria-labelledby="termsTitle" aria-describedby="termsDesc">
-    <div class="popup-content" tabindex="-1">
+  <!-- Terms Modal (shows every visit) -->
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+  <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle" aria-describedby="termsDesc">
+    <div class="modal-card" tabindex="-1">
       <h2 id="termsTitle">Terms and Conditions</h2>
-      <p id="termsDesc">
-        Please read and accept our
-        <a href="terms.html" target="_blank" rel="noopener">Terms and Conditions</a>
-        to continue.
-      </p>
-      <label class="checkbox-row">
-        <input type="checkbox" id="termsCheckbox" />
+      <p id="termsDesc">Please read and accept our <a href="terms.html" target="_blank" rel="noopener">Terms and Conditions</a> to continue.</p>
+      <label class="checkline">
+        <input type="checkbox" id="agreeBox" />
         <span>I agree to the Terms and Conditions</span>
       </label>
-      <button id="continueBtn" aria-disabled="true">Continue</button>
+      <button id="continueBtn" disabled aria-disabled="true">Continue</button>
     </div>
   </div>
 
+  <header class="site-header">
+    <div class="container row">
+      <div class="brand">Motherhood</div>
+      <nav class="nav">
+        <!-- Simple dropdown with two items -->
+        <details class="dropdown">
+          <summary aria-haspopup="listbox" aria-expanded="false">Menu</summary>
+          <ul class="menu" role="listbox">
+            <li><a href="index.html" role="option">Home</a></li>
+            <li><a href="terms.html" role="option">Terms &amp; Conditions</a></li>
+          </ul>
+        </details>
+      </nav>
+    </div>
+  </header>
 
-  <main class="main-content">
-    <section class="hero">
-      <h2>Welcome!</h2>
-      <p>This is your homepage content. The terms modal will show on every visit.</p>
-      <a class="button" href="#learn-more">Learn more</a>
-    </section>
-    <section id="learn-more" class="content">
-      <h3>About This Site</h3>
-      <p>Replace this with your real content. The overlay blocks interaction until you accept the terms each time.</p>
+  <!-- Hero section that matches the provided image -->
+  <section class="hero" role="img" aria-label="Soft pink horizon background">
+    <div class="hero-inner">
+      <h1 class="hero-title">WELCOME TO<br>MOTHERHOOD</h1>
+      <div class="underline" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <main class="main">
+    <section class="content">
+      <p class="lead">Good Luck...</p>
     </section>
   </main>
 
-  
+  <footer class="site-footer">
+    <div class="container">
+      <small>&copy; <span id="year"></span> Motherhood</small>
+    </div>
+  </footer>
+
   <script>
-    // Always show the modal on load (no storage, no remembering)
-    document.addEventListener("DOMContentLoaded", function () {
-      const popup = document.getElementById("termsPopup");
-      const checkbox = document.getElementById("termsCheckbox");
-      const button = document.getElementById("continueBtn");
+    // Always show modal on load. Obscure page with translucent layer.
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('termsModal');
+      const overlay = document.getElementById('overlay');
+      const box = document.getElementById('agreeBox');
+      const btn = document.getElementById('continueBtn');
 
-      // Focus management & initial state
-      popup.style.display = "flex";
-      button.setAttribute("disabled", "disabled");
-      checkbox.focus();
+      // Show
+      modal.classList.add('open');
+      overlay.classList.add('open');
+      document.body.classList.add('no-scroll');
+      box.focus();
 
-      // Enable/disable button based on checkbox
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-          button.removeAttribute("disabled");
-          button.setAttribute("aria-disabled", "false");
-        } else {
-          button.setAttribute("disabled", "disabled");
-          button.setAttribute("aria-disabled", "true");
-        }
+      box.addEventListener('change', () => {
+        const ok = box.checked;
+        btn.disabled = !ok;
+        btn.setAttribute('aria-disabled', ok ? 'false' : 'true');
       });
 
-      // Close only if checked
-      button.addEventListener("click", function () {
-        if (!checkbox.checked) return;
-        popup.style.display = "none";
-        document.body.classList.remove("no-scroll");
+      btn.addEventListener('click', () => {
+        if (!box.checked) return;
+        modal.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.classList.remove('no-scroll');
       });
 
-      // Theme select (optional)
-      const select = document.getElementById("themeSelect");
-      if (select) {
-        // Initialize to current html[data-theme]
-        const html = document.documentElement;
-        select.value = html.getAttribute("data-theme") || "sunset";
-        select.addEventListener("change", () => {
-          html.setAttribute("data-theme", select.value);
-        });
-      }
-
-      // Year in footer
-      document.getElementById("year").textContent = new Date().getFullYear();
+      // Footer year
+      document.getElementById('year').textContent = new Date().getFullYear();
     });
   </script>
 </body>
