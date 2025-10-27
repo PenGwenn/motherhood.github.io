@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Website</title>
+  <link rel="stylesheet" href="style.css">
+  <script>
+    window.onload = function() {
+      const accepted = localStorage.getItem("acceptedTerms");
+      if (!accepted) {
+        document.getElementById("termsPopup").style.display = "flex";
+      }
+    };
+
+    function acceptTerms() {
+      const checkbox = document.getElementById("termsCheckbox");
+      if (!checkbox.checked) {
+        alert("You must agree to the terms and conditions to proceed.");
+        return;
+      }
+      localStorage.setItem("acceptedTerms", "true");
+      document.getElementById("termsPopup").style.display = "none";
+    }
+  </script>
+</head>
+<body>
+  <div id="termsPopup" class="popup">
+    <div class="popup-content">
+      <h2>Terms and Conditions</h2>
+      <p>Please read and accept our <a href="terms.html" target="_blank">Terms and Conditions</a> to continue.</p>
+      <label><input type="checkbox" id="termsCheckbox"> I agree to the Terms and Conditions</label><br>
+      <button onclick="acceptTerms()">Continue</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1>Welcome to My Website!</h1>
+    <p>This is your homepage content.</p>
+  </div>
+</body>
+</html>
