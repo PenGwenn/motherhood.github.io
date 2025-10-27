@@ -1,52 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="sunset"> <!-- Change theme here: sunset | forest | ocean | midnight -->
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Website</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div id="termsPopup" class="popup">
-    <div class="popup-content">
-      <h2>Terms and Conditions</h2>
-      <p>
+<body class="no-scroll">
+  <!-- Terms Modal -->
+  <div id="termsPopup" class="popup" role="dialog" aria-modal="true" aria-labelledby="termsTitle" aria-describedby="termsDesc">
+    <div class="popup-content" tabindex="-1">
+      <h2 id="termsTitle">Terms and Conditions</h2>
+      <p id="termsDesc">
         Please read and accept our
-        <a href="terms.html" target="_blank">Terms and Conditions</a>
+        <a href="terms.html" target="_blank" rel="noopener">Terms and Conditions</a>
         to continue.
       </p>
-      <label>
+      <label class="checkbox-row">
         <input type="checkbox" id="termsCheckbox" />
-        I agree to the Terms and Conditions
-      </label><br />
-      <button id="continueBtn">Continue</button>
+        <span>I agree to the Terms and Conditions</span>
+      </label>
+      <button id="continueBtn" aria-disabled="true">Continue</button>
     </div>
   </div>
 
-  <div class="main-content">
-    <h1>Welcome to My Website!</h1>
-    <p>This is your homepage content.</p>
-  </div>
+  <!-- Optional in-page theme selector (you can remove this block if you’ll set the theme statically) -->
+  <header class="site-header">
+    <div class="container">
+      <h1 class="brand">My Website</h1>
+      <label class="theme-switch">
+        <span>Theme:</span>
+        <select id="themeSelect" aria-label="Theme">
+          <option value="sunset">Sunset</option>
+          <option value="forest">Forest</option>
+          <option value="ocean">Ocean</option>
+          <option value="midnight">Midnight</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="hero">
+      <h2>Welcome!</h2>
+      <p>This is your homepage content. The terms modal will show on every visit.</p>
+      <a class="button" href="#learn-more">Learn more</a>
+    </section>
+    <section id="learn-more" class="content">
+      <h3>About This Site</h3>
+      <p>Replace this with your real content. The overlay blocks interaction until you accept the terms each time.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>&copy; <span id="year"></span> My Website</small>
+    </div>
+  </footer>
 
   <script>
+    // Always show the modal on load (no storage, no remembering)
     document.addEventListener("DOMContentLoaded", function () {
       const popup = document.getElementById("termsPopup");
       const checkbox = document.getElementById("termsCheckbox");
       const button = document.getElementById("continueBtn");
-      const accepted = localStorage.getItem("acceptedTerms");
 
-      if (!accepted) {
-        popup.style.display = "flex";
+      // Focus management & initial state
+      popup.style.display = "flex";
+      button.setAttribute("disabled", "disabled");
+      checkbox.focus();
+
+      // Enable/disable button based on checkbox
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          button.removeAttribute("disabled");
+          button.setAttribute("aria-disabled", "false");
+        } else {
+          button.setAttribute("disabled", "disabled");
+          button.setAttribute("aria-disabled", "true");
+        }
+      });
+
+      // Close only if checked
+      button.addEventListener("click", function () {
+        if (!checkbox.checked) return;
+        popup.style.display = "none";
+        document.body.classList.remove("no-scroll");
+      });
+
+      // Theme select (optional)
+      const select = document.getElementById("themeSelect");
+      if (select) {
+        // Initialize to current html[data-theme]
+        const html = document.documentElement;
+        select.value = html.getAttribute("data-theme") || "sunset";
+        select.addEventListener("change", () => {
+          html.setAttribute("data-theme", select.value);
+        });
       }
 
-      button.addEventListener("click", function () {
-        if (!checkbox.checked) {
-          alert("You must agree to the terms and conditions to proceed.");
-          return;
-        }
-        localStorage.setItem("acceptedTerms", "true");
-        popup.style.display = "none";
-      });
+      // Year in footer
+      document.getElementById("year").textContent = new Date().getFullYear();
     });
   </script>
 </body>
